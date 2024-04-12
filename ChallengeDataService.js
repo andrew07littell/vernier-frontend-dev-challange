@@ -37,10 +37,9 @@ const delay = async (ms) => {
   return new Promise((accept) => {
     setTimeout(accept, ms);
   });
-}
+};
 
 export class ChallengeDataService {
-
   constructor() {
     this._streamTimeout = 0;
   }
@@ -56,14 +55,14 @@ export class ChallengeDataService {
   async getDataSet(which) {
     let count = 0;
 
-    if (which === 'small') {
+    if (which === "small") {
       count = 10;
-    } else if (which === 'medium') {
+    } else if (which === "medium") {
       count = 100;
-    } else if (which === 'large') {
+    } else if (which === "large") {
       count = 1000;
-     } else {
-      throw new Error('Invalid argument passed to getDataSet');
+    } else {
+      throw new Error("Invalid argument passed to getDataSet");
     }
 
     let x = 0;
@@ -72,13 +71,12 @@ export class ChallengeDataService {
     for (let i = 0; i < count; ++i) {
       xValues.push(x);
       yValues.push(Math.sin(x));
-      x += 2*Math.PI/count;
+      x += (2 * Math.PI) / count;
     }
 
-    const xColumn = new ChallengeDataColumn('x', xValues);
-    const yColumn = new ChallengeDataColumn('y', yValues);
+    const xColumn = new ChallengeDataColumn("x", xValues);
+    const yColumn = new ChallengeDataColumn("y", yValues);
 
-    // simulte this taking time
     await delay(Math.random() * 500);
 
     return new ChallengeDataSet(`DataSet-${which}`, xColumn, yColumn);
@@ -93,15 +91,14 @@ export class ChallengeDataService {
    *
    */
   startStreaming(rate, callback) {
-
     const delayMS = 1000 / rate;
-    const deltaX = 2*Math.PI / 100;
+    const deltaX = (2 * Math.PI) / 100;
     let x = 0;
 
     const getNextSample = () => {
       const y = Math.sin(x);
 
-      callback(x,y);
+      callback(x, y);
       x += deltaX;
 
       this._streamTimeout = setTimeout(getNextSample, delayMS);
